@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "bible-passage-retriever.helloWorld",
-        "title": "Hello World"
+        "command": "bible-passage-retriever.getPassage",
+        "title": "Get Bible Passage"
       }
     ]
   },
