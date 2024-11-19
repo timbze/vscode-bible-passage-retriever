@@ -1,8 +1,7 @@
 import * as vscode from 'vscode'
+const bcv_parser = require('./parser/en_bcv_parser')
 
 export function activate(context: vscode.ExtensionContext) {
-
-  console.log('Congratulations, your extension "bible-passage-retriever" is now active!')
 
   // The command has been defined in the package.json file
   const disposable = vscode.commands.registerCommand('bible-passage-retriever.getPassage', () => {
@@ -12,12 +11,24 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
+    // Get text from selection or around cursor
+    let text
     const selection = editor.selection
-    const text = editor.document.getText(selection)
+    if (!selection.isEmpty) {
+      text = editor.document.getText(selection)
+    } else {
+      const cursorPosition = selection.active
+      const lineText = editor.document.lineAt(cursorPosition.line).text
+      text = lineText.trim()
+    }
 
-    console.log('selection text', text)
+    // Parse the Bible reference
+    const parser = new bcv_parser.BcvParser()
+    parser.parse(text)
+    const osisRefs = parser.osis()
 
-    vscode.window.showInformationMessage('Hello World from Bible Passage Retriever!')
+    console.log('retrieved text', text)
+    console.log('OSIS references', osisRefs)
   })
 
   context.subscriptions.push(disposable)
