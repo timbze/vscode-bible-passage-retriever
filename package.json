@@ -2,7 +2,7 @@
   "name": "bible-passage-retriever",
   "displayName": "Bible Passage Retriever",
   "description": "Paste Bible passage based on current reference in editor.",
-  "version": "0.0.1",
+  "version": "0.9.1",
   "engines": {
     "vscode": "^1.95.0"
   },
