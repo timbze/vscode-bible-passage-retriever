@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import * as bcvParser from './parser/en_bcv_parser'
+import { bcv_parser } from './parser/en_bcv_parser'
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     // Parse the Bible reference
-    const parser = new bcvParser.bcvParser()
+    const parser = new bcv_parser()
     parser.parse(text)
     const osisRefs = parser.osis()
 
