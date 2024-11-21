@@ -12,4 +12,3 @@ vsc-extension-quickstart.md
 node_modules
 out/
 **/esbuild.js
-dist/

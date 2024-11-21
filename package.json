@@ -2,6 +2,8 @@
   "name": "bible-passage-retriever",
   "displayName": "Bible Passage Retriever",
   "description": "Paste Bible passage based on current reference in editor.",
+  "publisher": "timmy-braun",
+  "repository": "https://github.com/timbze/vscode-bible-passage-retriever",
   "version": "0.9.1",
   "engines": {
     "vscode": "^1.95.0"
