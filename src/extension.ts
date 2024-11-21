@@ -28,12 +28,27 @@ export function activate(context: vscode.ExtensionContext) {
     parser.parse(text)
     const osisRefs = parser.osis()
 
-    console.log('retrieved text', text)
-    console.log('OSIS references', osisRefs)
+    console.debug('retrieved text', text)
+    console.debug('OSIS references', osisRefs)
     if (osisRefs.length > 0) {
       try {
         const passage = await getBiblePassage(osisRefs)
-        console.log('passage', passage)
+
+        editor.edit(editBuilder => {
+          if (!selection.isEmpty) {
+            const endPosition = selection.end
+            const textBeforeInsert = editor.document.getText(new vscode.Range(endPosition.translate(0, -1), endPosition))
+            const prefix = textBeforeInsert.endsWith(' ') ? '' : ' '
+            editBuilder.insert(endPosition, prefix + passage)
+          } else {
+            const position = selection.active
+            const textBeforeInsert = position.character > 0
+              ? editor.document.getText(new vscode.Range(position.translate(0, -1), position))
+              : ''
+            const prefix = textBeforeInsert.endsWith(' ') ? '' : ' '
+            editBuilder.insert(position, prefix + passage)
+          }
+        })
       } catch (error) {
         console.error('Error fetching passage:', error)
       }

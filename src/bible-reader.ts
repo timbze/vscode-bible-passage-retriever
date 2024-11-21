@@ -42,7 +42,8 @@ export function getBiblePassage(osisReferences: string): Promise<string> {
             reject(err)
             return
           }
-          passages.push(row ? row.text : `Reference not found: ${ref}`)
+          const txt = cleanPassage(row ? row.text : `Reference not found: ${ref}`)
+          passages.push(txt)
 
           if (passages.length === references.length) {
             db.close()
@@ -69,4 +70,15 @@ export function getBiblePassage(osisReferences: string): Promise<string> {
       })
     })
   })
+}
+
+function cleanPassage(passage: string): string {
+  return passage
+    // Remove content within <S> tags (strongs numbers) including the tags themselves
+    .replace(/<S>.*?<\/S>/g, '')
+    // Remove all remaining XML tags
+    .replace(/<[^>]*>/g, '')
+    // Clean up any double spaces and trim
+    .replace(/\s+/g, ' ')
+    .trim()
 }
