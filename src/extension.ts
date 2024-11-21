@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import { bcv_parser } from './parser/en_bcv_parser'
+import { getBiblePassage } from './bible-reader'
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -29,6 +30,10 @@ export function activate(context: vscode.ExtensionContext) {
 
     console.log('retrieved text', text)
     console.log('OSIS references', osisRefs)
+    if (osisRefs.length > 0) {
+      const passage = getBiblePassage(osisRefs)
+      console.log('passage', passage)
+    }
   })
 
   context.subscriptions.push(disposable)
