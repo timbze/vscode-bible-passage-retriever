@@ -5,7 +5,7 @@ import { getBiblePassage } from './bible-reader'
 export function activate(context: vscode.ExtensionContext) {
 
   // The command has been defined in the package.json file
-  const disposable = vscode.commands.registerCommand('bible-passage-retriever.getPassage', () => {
+  const disposable = vscode.commands.registerCommand('bible-passage-retriever.getPassage', async () => {
     const editor = vscode.window.activeTextEditor
     if (!editor) {
       vscode.window.showInformationMessage('No active editor')
@@ -31,8 +31,12 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('retrieved text', text)
     console.log('OSIS references', osisRefs)
     if (osisRefs.length > 0) {
-      const passage = getBiblePassage(osisRefs)
-      console.log('passage', passage)
+      try {
+        const passage = await getBiblePassage(osisRefs)
+        console.log('passage', passage)
+      } catch (error) {
+        console.error('Error fetching passage:', error)
+      }
     }
   })
 
