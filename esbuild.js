@@ -16,9 +16,6 @@ async function main() {
     outfile: 'dist/extension.js',
     external: ['vscode', 'sqlite3'],
     logLevel: 'info',
-    loader: {
-      '.node': 'file'
-    },
     plugins: [
       copy({
         assets: {

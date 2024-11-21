@@ -12,3 +12,8 @@ vsc-extension-quickstart.md
 node_modules
 out/
 **/esbuild.js
+
+# Don't ignore sqlite3 module and its dependencies
+!node_modules/sqlite3/**
+!node_modules/bindings/**
+!node_modules/file-uri-to-path/**
