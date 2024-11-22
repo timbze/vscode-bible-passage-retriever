@@ -1,0 +1,4 @@
+en_bcv_parser.js linguist-vendored
+esbuild.js linguist-vendored
+eslint.config.mjs linguist-vendored
+.vscode-test.mjs linguist-vendored
