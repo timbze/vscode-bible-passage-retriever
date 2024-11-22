@@ -4,6 +4,6 @@ This is a VS Code extension that helps you retrieve Bible passages directly with
 
 ## Release Notes
 
-### 0.9.1
+### 0.9.2
 
 Initial beta release of Bible Passage Retriever.
