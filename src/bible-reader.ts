@@ -25,15 +25,20 @@ export function getBiblePassage(osisReferences: string): Promise<string> {
         const bookNumber = osisToMyBible[book]
         const chapterNumber = Number(chapter)
         const verseNumber = verse ? Number(verse) : undefined
-        console.log('book (bookNumber)', book, bookNumber)
-        console.log('chapter', chapterNumber)
-        console.log('verse', verseNumber)
+        console.log('reference (book, chapter, verse)', bookNumber, chapterNumber, verseNumber)
+
         let sql = 'SELECT text FROM verses WHERE book_number = ? AND chapter = ?'
         const params = [bookNumber, chapterNumber]
 
         if (verseNumber) {
           sql += ' AND verse = ?'
           params.push(verseNumber)
+        }
+
+        let completed = false
+        function success(passage: string) {
+          completed = true
+          resolve(passage)
         }
 
         db.each(sql, params, function(err: Error | null, row: VerseRow) {
@@ -47,26 +52,26 @@ export function getBiblePassage(osisReferences: string): Promise<string> {
 
           if (passages.length === references.length) {
             db.close()
-            resolve(passages.join('\n'))
+            success(passages.join('\n'))
           }
         })
 
         setTimeout(() => {
-          if (passages.length === references.length) {
+          if (completed) {
             return
           }
 
           try {
             db.close()
-          } finally {}
-
-          if (passages.length > 0) {
-            console.warn(`Timeout after 3 seconds, returning ${passages.length} passages`)
-            resolve(passages.join('\n'))
-          } else {
-            reject(new Error('Timeout after 3 seconds'))
+          } finally {
+            if (passages.length > 0) {
+              console.warn(`Timeout after 3 seconds, returning ${passages.length} passages`)
+              success(passages.join('\n'))
+            } else {
+              reject(new Error('Timeout after 3 seconds'))
+            }
           }
-        }, 3000)
+        }, 1500)
       })
     })
   })
