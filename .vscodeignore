@@ -12,6 +12,7 @@ vsc-extension-quickstart.md
 node_modules
 out/
 **/esbuild.js
+dist/test/**
 
 # Don't ignore sqlite3 module and its dependencies
 !node_modules/sqlite3/**
