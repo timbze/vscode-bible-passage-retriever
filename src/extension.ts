@@ -41,12 +41,11 @@ export function activate(context: vscode.ExtensionContext) {
             const prefix = textBeforeInsert.endsWith(' ') ? '' : ' '
             editBuilder.insert(endPosition, prefix + passage)
           } else {
-            const position = selection.active
-            const textBeforeInsert = position.character > 0
-              ? editor.document.getText(new vscode.Range(position.translate(0, -1), position))
-              : ''
+            const line = editor.document.lineAt(selection.active.line)
+            const lineEndPos = line.range.end
+            const textBeforeInsert = editor.document.getText(new vscode.Range(lineEndPos.translate(0, -1), lineEndPos))
             const prefix = textBeforeInsert.endsWith(' ') ? '' : ' '
-            editBuilder.insert(position, prefix + passage)
+            editBuilder.insert(lineEndPos, prefix + passage)
           }
         })
       } catch (error) {
