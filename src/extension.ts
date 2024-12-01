@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
       try {
         const passage = await getBiblePassage(osisRefs)
 
-        editor.edit(editBuilder => {
+        await editor.edit(editBuilder => {
           if (!selection.isEmpty) {
             const endPosition = selection.end
             const textBeforeInsert = editor.document.getText(new vscode.Range(endPosition.translate(0, -1), endPosition))
