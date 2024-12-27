@@ -22,3 +22,7 @@ Genesis 1:1-3 In the beginning God created the heaven and the earth.
 
 - Bible references are parsed using the [Bible Passage Reference Parser](https://github.com/openbibleinfo/Bible-Passage-Reference-Parser) library. It's stored locally in the extension, slightly modified to work with ES5 which was done by someone in the [AndBible](https://github.com/AndBible/and-bible) team.
 - The parsed references are then used to query the local SQLite database of MyBible format. The extension uses the [sqlite3](https://www.npmjs.com/package/sqlite3) npm package to access the database.
+
+## Known issues
+
+- Extension is not working everywhere, and I think this is because of the processor architecture. The sqlite3 library gets built on x64 so only the binary for that platform is added by default. Need to figure out a way to solve this.
