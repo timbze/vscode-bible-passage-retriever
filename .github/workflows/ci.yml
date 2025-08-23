@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest] # macOS is not supported yet, see comment below
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v4
@@ -31,14 +31,9 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: xvfb-run -a npm run test
 
-    # got rid of 1 error after copying to short directory, but still other errors. Not running on macOS for now.
     - name: Run tests (macOS)
       if: matrix.os == 'macos-latest'
-      run: |
-        mkdir -p /tmp/vscode
-        cp -r . /tmp/vscode
-        cd /tmp/vscode
-        npm run test
+      run: npm run test
 
     - name: Run tests (Windows)
       if: matrix.os == 'windows-latest'
