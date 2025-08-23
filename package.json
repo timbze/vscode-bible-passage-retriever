@@ -30,7 +30,7 @@
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
     "vscode:prepublish": "npm run package",
     "package": "npm run check-types && node esbuild.js --production",
-    "test": "npm run dev && vscode-test"
+    "test": "npm run dev && node node_modules/@vscode/test-cli/out/bin.mjs"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
