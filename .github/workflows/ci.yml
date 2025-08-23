@@ -31,9 +31,14 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: xvfb-run -a npm run test
 
+      # need to run on shorter directory to avoid "longer than 103 chars" error
     - name: Run tests (macOS)
       if: matrix.os == 'macos-latest'
-      run: npm run test
+      run: |
+        mkdir -p /tmp/vscode
+        cp -r . /tmp/vscode
+        cd /tmp/vscode
+        npm run test
 
     - name: Run tests (Windows)
       if: matrix.os == 'windows-latest'
