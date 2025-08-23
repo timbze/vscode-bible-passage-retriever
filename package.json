@@ -35,6 +35,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.9",
+    "@types/sql.js": "^1.4.9",
     "@types/vscode": "^1.64.0",
     "@typescript-eslint/eslint-plugin": "^8.16.0",
     "@typescript-eslint/parser": "^8.16.0",
@@ -46,6 +47,6 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "sqlite3": "^5.1.7"
+    "sql.js": "^1.13.0"
   }
 }

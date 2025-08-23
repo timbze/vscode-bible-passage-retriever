@@ -1,4 +1,5 @@
-import sqlite3 from 'sqlite3'
+import initSqlJs from 'sql.js'
+import * as fs from 'fs'
 import path from 'path'
 import { osisToMyBible } from './mapping/osis-to-mybible'
 
@@ -8,63 +9,42 @@ interface VerseRow {
   chapter: number
 }
 
-export function getBiblePassage(osisReferences: string): Promise<string> {
-  return new Promise((resolve, reject) => {
+export async function getBiblePassage(osisReferences: string): Promise<string> {
+  try {
+    const SQL = await initSqlJs({
+      locateFile: () => path.join(__dirname, 'sql-wasm.wasm')
+    })
     const dbPath = path.join(__dirname, './bibles/KJV1769+.SQLite3')
-    const db = new sqlite3.Database(dbPath, (err) => {
-      if (err) {
-        reject(err)
-        return
-      }
-    })
-    
+    const buffer = fs.readFileSync(dbPath)
+    const db = new SQL.Database(buffer)
     const references = osisReferences.split(',').map(ref => ref.trim())
-    
-    let referencePromises: Promise<string[]>[] = []
-    db.serialize(() => {
-      referencePromises = references.map(ref => {
-        return new Promise<string[]>((resolveRef, rejectRef) => {
-          const { sql, params } = getSql(ref)
-          const passages: string[] = []
-          let firstDone = false
-          
-          db.each(sql, params, 
-            (err: Error | null, row: VerseRow) => {
-              if (err) {
-                rejectRef(err)
-                return
-              }
-              let txt = cleanPassage(row ? row.text : `Reference not found: ${ref}`)
-              if (firstDone && row) {
-                const chapter = firstDone && row.verse === 1 ? row.chapter + ':' : ''
-                txt = `${chapter}${row.verse} ${txt}`
-              }
-              passages.push(txt)
-              firstDone = true
-            },
-            // runs after all verses are handled
-            (err: Error | null, count: number) => {
-              if (err) {
-                rejectRef(err)
-              } else {
-                resolveRef(passages)
-              }
-            }
-          )
-        })
-      })
-    })
-
-    // Wait for all references to be processed
-    Promise.all(referencePromises)
-      .then(allPassages => {
-        resolve(allPassages.flat().join('\n'))
-      })
-      .catch(err => {
-        reject(err)
-      })
-      .finally(() => db.close())
-  })
+    const allPassages: string[] = []
+    for (const ref of references) {
+      const { sql, params } = getSql(ref)
+      const stmt = db.prepare(sql)
+      stmt.bind(params)
+      const passages: string[] = []
+      let firstDone = false
+      while (stmt.step()) {
+        const row = stmt.getAsObject() as unknown as VerseRow
+        let txt = cleanPassage(row.text)
+        let prefix = ''
+        if (firstDone) {
+          const chapter = (row.verse === 1) ? `${row.chapter}:` : ''
+          prefix = `${chapter}${row.verse} `
+        }
+        txt = prefix + txt
+        passages.push(txt)
+        firstDone = true
+      }
+      stmt.free()
+      allPassages.push(...passages)
+    }
+    db.close()
+    return allPassages.join('\n')
+  } catch (err) {
+    throw err
+  }
 }
 
 function getSql(ref: string): { sql: string, params: any[] } {

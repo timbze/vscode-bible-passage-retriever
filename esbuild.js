@@ -14,14 +14,20 @@ async function main() {
     sourcesContent: false,
     platform: 'node',
     outdir: 'dist',
-    external: ['vscode', 'sqlite3'],
+    external: ['vscode'],
     logLevel: 'info',
     plugins: [
       copy({
-        assets: {
-          from: ['./src/bibles/*'],
-          to: ['./bibles']
-        }
+        assets: [
+          {
+            from: ['./src/bibles/*'],
+            to: ['./bibles']
+          },
+          {
+            from: ['./node_modules/sql.js/dist/sql-wasm.wasm'],
+            to: ['./']
+          }
+        ]
       }),
       /* add to the end of plugins array */
       esbuildProblemMatcherPlugin
