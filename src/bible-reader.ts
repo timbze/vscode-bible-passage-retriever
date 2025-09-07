@@ -90,8 +90,6 @@ function cleanPassage(passage: string): string {
   return passage
     // Remove content within <S> tags (strongs numbers) including the tags themselves
     .replace(/<S>.*?<\/S>/g, '')
-    // Remove content within <J> tags (notes) including the tags themselves
-    .replace(/<J>.*?<\/J>/g, '')
     // Remove content within <n> tags (notes) including the tags themselves
     .replace(/<n>.*?<\/n>/g, '')
     // Remove all remaining XML tags
