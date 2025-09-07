@@ -2,6 +2,9 @@
 
 All notable changes to the "bible-passage-retriever" extension will be documented in this file.
 
+## 0.9.7
+- Revert v0.9.6 `<J>` content removal because it also removes words of Jesus.
+
 ## 0.9.6
 - Remove `<J>` content from verses, which is some kind of note.
 
