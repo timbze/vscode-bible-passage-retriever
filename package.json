@@ -4,7 +4,7 @@
   "description": "Paste Bible passage based on current reference in editor.",
   "publisher": "timmy-braun",
   "repository": "https://github.com/timbze/vscode-bible-passage-retriever",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "engines": {
     "vscode": "^1.64.0"
   },
