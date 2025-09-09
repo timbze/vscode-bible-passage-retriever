@@ -28,8 +28,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "vscode:prepublish": "npm run package",
-    "package": "npm run check-types && node esbuild.js --production",
+    "package": "vsce package",
     "test": "npm run dev && node node_modules/@vscode/test-cli/out/bin.mjs"
   },
   "devDependencies": {

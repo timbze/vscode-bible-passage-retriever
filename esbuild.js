@@ -29,6 +29,37 @@ async function main() {
           }
         ]
       }),
+      // Custom plugin to clean entire dist folder
+      {
+        name: 'clean-dist',
+        setup(build) {
+          build.onStart(() => {
+            const fs = require('fs')
+            const path = require('path')
+
+            const distDir = path.join(process.cwd(), 'dist')
+
+            function deleteFolderRecursive(folderPath) {
+              if (fs.existsSync(folderPath)) {
+                fs.readdirSync(folderPath).forEach(file => {
+                  const curPath = path.join(folderPath, file)
+                  if (fs.statSync(curPath).isDirectory()) {
+                    // Recurse into subdirectory
+                    deleteFolderRecursive(curPath)
+                  } else {
+                    // Delete file
+                    fs.unlinkSync(curPath)
+                  }
+                })
+                fs.rmdirSync(folderPath)
+              }
+            }
+
+            // Clean entire dist directory
+            deleteFolderRecursive(distDir)
+          })
+        }
+      },
       /* add to the end of plugins array */
       esbuildProblemMatcherPlugin
     ]
