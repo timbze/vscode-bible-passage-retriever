@@ -14,7 +14,7 @@ export async function getBiblePassage(osisReferences: string): Promise<string> {
     const SQL = await initSqlJs({
       locateFile: () => path.join(__dirname, 'sql-wasm.wasm')
     })
-    const dbPath = path.join(__dirname, './bibles/KJV1769+.SQLite3')
+    const dbPath = path.join(__dirname, './bibles/KJV+.SQLite3')
     const buffer = fs.readFileSync(dbPath)
     const db = new SQL.Database(buffer)
     const references = osisReferences.split(',').map(ref => ref.trim())
