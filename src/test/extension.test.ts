@@ -130,6 +130,70 @@ suite('Extension Test Suite', () => {
     await config.update('verseSeparator', undefined, vscode.ConfigurationTarget.Global)
   })
 
+  test('Multi-verse passage with verse numbers shown (default)', async () => {
+    // Ensure default settings
+    const config = vscode.workspace.getConfiguration('bible-passage-retriever')
+    await config.update('showVerseNumbers', true, vscode.ConfigurationTarget.Global)
+    await config.update('verseSeparator', 'space', vscode.ConfigurationTarget.Global)
+
+    // Create and show a new document
+    const document = await vscode.workspace.openTextDocument({
+      content: 'John 3:16-17',
+      language: 'plaintext'
+    })
+    const editor = await vscode.window.showTextDocument(document)
+
+    // Select the text
+    const position = new vscode.Position(0, 0)
+    editor.selection = new vscode.Selection(position, position.translate(0, 12))
+
+    // Run getPassage command
+    await vscode.commands.executeCommand('bible-passage-retriever.getPassage')
+
+    // Assert the result - verse numbers are present
+    const text = document.getText()
+    assert.strictEqual(
+      text,
+      'John 3:16-17 For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life. 17 For God sent not his Son into the world to condemn the world; but that the world through him might be saved.'
+    )
+
+    // Reset
+    await config.update('verseSeparator', undefined, vscode.ConfigurationTarget.Global)
+    await config.update('showVerseNumbers', undefined, vscode.ConfigurationTarget.Global)
+  })
+
+  test('Multi-verse passage with verse numbers hidden', async () => {
+    // Disable verse numbers
+    const config = vscode.workspace.getConfiguration('bible-passage-retriever')
+    await config.update('showVerseNumbers', false, vscode.ConfigurationTarget.Global)
+    await config.update('verseSeparator', 'space', vscode.ConfigurationTarget.Global)
+
+    // Create and show a new document
+    const document = await vscode.workspace.openTextDocument({
+      content: 'John 3:16-17',
+      language: 'plaintext'
+    })
+    const editor = await vscode.window.showTextDocument(document)
+
+    // Select the text
+    const position = new vscode.Position(0, 0)
+    editor.selection = new vscode.Selection(position, position.translate(0, 12))
+
+    // Run getPassage command
+    await vscode.commands.executeCommand('bible-passage-retriever.getPassage')
+
+    // Assert the result - no verse numbers between verses
+    const text = document.getText()
+    assert.strictEqual(
+      text,
+      'John 3:16-17 For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life. For God sent not his Son into the world to condemn the world; but that the world through him might be saved.'
+    )
+
+    // Reset
+    await config.update('showVerseNumbers', undefined, vscode.ConfigurationTarget.Global)
+    await config.update('verseSeparator', undefined, vscode.ConfigurationTarget.Global)
+  })
+
   test('Bible passage does not show extra note bug from 1769+ version', async () => {
     // Create and show a new document
     const document = await vscode.workspace.openTextDocument({

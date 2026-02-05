@@ -9,7 +9,7 @@ interface VerseRow {
   chapter: number
 }
 
-export async function getBiblePassage(osisReferences: string, separator: string = '\n'): Promise<string> {
+export async function getBiblePassage(osisReferences: string, separator: string = '\n', showVerseNumbers: boolean = true): Promise<string> {
   try {
     const SQL = await initSqlJs({
       locateFile: () => path.join(__dirname, 'sql-wasm.wasm')
@@ -29,7 +29,7 @@ export async function getBiblePassage(osisReferences: string, separator: string 
         const row = stmt.getAsObject() as unknown as VerseRow
         let txt = cleanPassage(row.text)
         let prefix = ''
-        if (firstDone) {
+        if (firstDone && showVerseNumbers) {
           const chapter = (row.verse === 1) ? `${row.chapter}:` : ''
           prefix = `${chapter}${row.verse} `
         }

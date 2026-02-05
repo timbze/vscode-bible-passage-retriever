@@ -35,7 +35,8 @@ export function activate(context: vscode.ExtensionContext) {
         const config = vscode.workspace.getConfiguration('bible-passage-retriever')
         const separatorSetting = config.get<string>('verseSeparator', 'newline')
         const separator = separatorSetting === 'space' ? ' ' : '\n'
-        const passage = await getBiblePassage(osisRefs, separator)
+        const showVerseNumbers = config.get<boolean>('showVerseNumbers', true)
+        const passage = await getBiblePassage(osisRefs, separator, showVerseNumbers)
 
         await editor.edit(editBuilder => {
           if (!selection.isEmpty) {

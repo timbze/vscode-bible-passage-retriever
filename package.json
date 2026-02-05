@@ -28,6 +28,11 @@
           "enum": ["newline", "space"],
           "default": "newline",
           "description": "Controls how multiple verses are separated when inserted."
+        },
+        "bible-passage-retriever.showVerseNumbers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show verse numbers before each subsequent verse in a multi-verse passage."
         }
       }
     }
