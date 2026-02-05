@@ -2,6 +2,10 @@
 
 All notable changes to the "bible-passage-retriever" extension will be documented in this file.
 
+## 0.9.9
+- Add setting to use space separator instead of newline when pasting multiple verses.
+- Add setting to show/hide verse numbers in front of verses.
+
 ## 0.9.8
 - Replace KJV Bible module for less bugs.
 
