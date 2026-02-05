@@ -9,7 +9,7 @@ interface VerseRow {
   chapter: number
 }
 
-export async function getBiblePassage(osisReferences: string): Promise<string> {
+export async function getBiblePassage(osisReferences: string, separator: string = '\n'): Promise<string> {
   try {
     const SQL = await initSqlJs({
       locateFile: () => path.join(__dirname, 'sql-wasm.wasm')
@@ -41,7 +41,7 @@ export async function getBiblePassage(osisReferences: string): Promise<string> {
       allPassages.push(...passages)
     }
     db.close()
-    return allPassages.join('\n')
+    return allPassages.join(separator)
   } catch (err) {
     throw err
   }

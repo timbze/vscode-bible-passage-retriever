@@ -32,7 +32,10 @@ export function activate(context: vscode.ExtensionContext) {
     console.debug('OSIS references', osisRefs)
     if (osisRefs.length > 0) {
       try {
-        const passage = await getBiblePassage(osisRefs)
+        const config = vscode.workspace.getConfiguration('bible-passage-retriever')
+        const separatorSetting = config.get<string>('verseSeparator', 'newline')
+        const separator = separatorSetting === 'space' ? ' ' : '\n'
+        const passage = await getBiblePassage(osisRefs, separator)
 
         await editor.edit(editBuilder => {
           if (!selection.isEmpty) {

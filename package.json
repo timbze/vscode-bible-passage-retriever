@@ -19,7 +19,18 @@
         "command": "bible-passage-retriever.getPassage",
         "title": "Get Bible Passage"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Bible Passage Retriever",
+      "properties": {
+        "bible-passage-retriever.verseSeparator": {
+          "type": "string",
+          "enum": ["newline", "space"],
+          "default": "newline",
+          "description": "Controls how multiple verses are separated when inserted."
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "npm run check-types && node esbuild.js",
