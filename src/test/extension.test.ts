@@ -93,7 +93,8 @@ suite('Extension Test Suite', () => {
     await vscode.commands.executeCommand('bible-passage-retriever.getPassage')
 
     // Assert the result - verses separated by newline
-    const text = document.getText()
+    // Normalize line endings so the test passes on Windows (\r\n) and Unix (\n)
+    const text = document.getText().replace(/\r\n/g, '\n')
     assert.strictEqual(
       text,
       'John 3:16-17 For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.\n17 For God sent not his Son into the world to condemn the world; but that the world through him might be saved.'
