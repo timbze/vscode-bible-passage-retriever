@@ -10,13 +10,24 @@ This is a VS Code extension that helps you retrieve Bible passages directly with
 
 ## Usage
 
-1. Enter `Genesis 1:1-3` and from the command palette select `Get Bible Passage`.
+1. Enter `Genesis 1:1-3` and from the command palette select `Get Bible Passage` (or `Get Bible Passage (Custom Options)` to choose formatting options).
 2. Passage gets added after your entered reference:
 ```
 Genesis 1:1-3 In the beginning God created the heaven and the earth.
 2 And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.
 3 And God said, Let there be light: and there was light.
 ```
+
+## Settings
+
+The extension provides the following settings under **Bible Passage Retriever** in the VS Code settings:
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| `bible-passage-retriever.verseSeparator` | `newline` | Controls how multiple verses are separated when inserted. Options: `newline`, `space`. |
+| `bible-passage-retriever.showVerseNumbers` | `true` | Show verse numbers before each subsequent verse in a multi-verse passage. |
+
+You can also use the **Get Bible Passage (Custom Options)** command to choose these options on the fly without changing your settings.
 
 ## How it works
 

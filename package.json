@@ -4,7 +4,7 @@
   "description": "Paste Bible passage based on current reference in editor.",
   "publisher": "timmy-braun",
   "repository": "https://github.com/timbze/vscode-bible-passage-retriever",
-  "version": "0.9.9",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.64.0"
   },
@@ -48,7 +48,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "vsce package",
+    "package": "npm install && npm run compile && vsce package",
     "test": "npm run dev && node node_modules/@vscode/test-cli/out/bin.mjs"
   },
   "devDependencies": {
