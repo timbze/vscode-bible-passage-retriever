@@ -18,6 +18,10 @@
       {
         "command": "bible-passage-retriever.getPassage",
         "title": "Get Bible Passage"
+      },
+      {
+        "command": "bible-passage-retriever.getPassageCustom",
+        "title": "Get Bible Passage (Custom Options)"
       }
     ],
     "configuration": {
