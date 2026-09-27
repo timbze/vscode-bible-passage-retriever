@@ -24,6 +24,13 @@
         "title": "Get Bible Passage (Custom Options)"
       }
     ],
+    "keybindings": [
+      {
+        "command": "bible-passage-retriever.getPassage",
+        "key": "shift+alt+p",
+        "when": "editorTextFocus && !editorReadonly"
+      }
+    ],
     "configuration": {
       "title": "Bible Passage Retriever",
       "properties": {

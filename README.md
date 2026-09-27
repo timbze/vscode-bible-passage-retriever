@@ -10,7 +10,7 @@ This is a VS Code extension that helps you retrieve Bible passages directly with
 
 ## Usage
 
-1. Enter `Genesis 1:1-3` and from the command palette select `Get Bible Passage` (or `Get Bible Passage (Custom Options)` to choose formatting options).
+1. Enter `Genesis 1:1-3` and press `Alt+Shift+P`, or run `Get Bible Passage` from the command palette. Use `Get Bible Passage (Custom Options)` to choose formatting options.
 2. Passage gets added after your entered reference:
 ```
 Genesis 1:1-3 In the beginning God created the heaven and the earth.
