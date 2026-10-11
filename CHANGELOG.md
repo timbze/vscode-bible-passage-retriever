@@ -2,6 +2,10 @@
 
 All notable changes to the "bible-passage-retriever" extension will be documented in this file.
 
+## Unreleased
+- Read the Bible text with libsword (the SWORD Project's library, as WebAssembly) from the CrossWire KJV module, instead of a MyBible SQLite database.
+- Psalm titles are no longer part of verse 1, and the subscriptions after the epistles are left out.
+
 ## 1.0.0
 - Add "Get Bible Passage (Custom Options)" command that lets you choose formatting options (verse separator, verse numbers) each time via a quick pick menu.
 

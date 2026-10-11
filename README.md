@@ -1,6 +1,6 @@
 # Bible Passage Retriever VS Code Extension
 
-This is a VS Code extension that helps you retrieve Bible passages directly within your editor. It currently provides the King James Version (1769) Bible text. The text is stored in a local SQLite database (in MyBible format) for fast retrieval.
+This is a VS Code extension that helps you retrieve Bible passages directly within your editor. It currently provides the King James Version (1769) Bible text, from the [CrossWire](https://crosswire.org/) KJV module bundled with the extension.
 
 ## Features
 
@@ -32,4 +32,5 @@ You can also use the **Get Bible Passage (Custom Options)** command to choose th
 ## How it works
 
 - Bible references are parsed using the [Bible Passage Reference Parser](https://github.com/openbibleinfo/Bible-Passage-Reference-Parser) library. It's stored locally in the extension, slightly modified to work with ES5 which was done by someone in the [AndBible](https://github.com/AndBible/and-bible) team.
-- The parsed references are then used to query the local SQLite database of MyBible format. The extension uses the [sql.js](https://www.npmjs.com/package/sql.js) npm package to access the database.
+- The parsed references are then read from the bundled SWORD module with [libsword](https://crosswire.org/sword/), the SWORD Project's library, built to WebAssembly so the same extension runs on every platform and CPU. `sword/build.sh` builds it (with Docker) into `src/sword/`; see the comments there.
+- Passages are plain verse text: Psalm titles, headings, footnotes, Strong's numbers and the subscriptions after the epistles are left out.

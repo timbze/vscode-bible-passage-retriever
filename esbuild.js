@@ -20,11 +20,11 @@ async function main() {
       copy({
         assets: [
           {
-            from: ['./src/bibles/*'],
+            from: ['./src/bibles/**/*'],
             to: ['./bibles']
           },
           {
-            from: ['./node_modules/sql.js/dist/sql-wasm.wasm'],
+            from: ['./src/sword/sword.wasm'],
             to: ['./']
           }
         ]
