@@ -288,6 +288,13 @@ suite('Extension Test Suite', () => {
     )
   })
 
+  test('Worshipped is spelled with double p', async () => {
+    assert.strictEqual(
+      await getPassageFor('John 9:38'),
+      'John 9:38 And he said, Lord, I believe. And he worshipped him.'
+    )
+  })
+
   test('Several references on one line', async () => {
     assert.strictEqual(
       await getPassageFor('John 11:35, Romans 8:28'),
