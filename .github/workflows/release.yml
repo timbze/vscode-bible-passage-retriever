@@ -1,0 +1,69 @@
+name: Release
+
+# Push a tag like `v1.2.3` (matching the version in package.json) to publish
+# the extension to the VS Code Marketplace and Open VSX, and to create a
+# GitHub release with the .vsix attached.
+#
+# Required repository secrets:
+#   VSCE_PAT - Azure DevOps personal access token with Marketplace > Manage scope
+#   OVSX_PAT - Open VSX access token (https://open-vsx.org/user-settings/tokens)
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Check tag matches package.json version
+      run: |
+        PKG_VERSION="$(node -p "require('./package.json').version")"
+        if [ "${GITHUB_REF_NAME}" != "v${PKG_VERSION}" ]; then
+          echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${PKG_VERSION}"
+          exit 1
+        fi
+        echo "VERSION=${PKG_VERSION}" >> "$GITHUB_ENV"
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: xvfb-run -a npm run test
+
+    - name: Build
+      run: npm run compile
+
+    - name: Package
+      run: npx --yes @vscode/vsce@4.0.0 package --out "bible-passage-retriever-${VERSION}.vsix"
+
+    - name: Publish to VS Code Marketplace
+      run: npx --yes @vscode/vsce@4.0.0 publish --packagePath "bible-passage-retriever-${VERSION}.vsix"
+      env:
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+    - name: Publish to Open VSX
+      run: npx --yes ovsx@1.2.0 publish "bible-passage-retriever-${VERSION}.vsix"
+      env:
+        OVSX_PAT: ${{ secrets.OVSX_PAT }}
+
+    - name: Create GitHub release
+      run: |
+        # Use this version's section of CHANGELOG.md as the release notes
+        awk -v v="## ${VERSION}" '$0 == v {f=1; next} /^## / {f=0} f' CHANGELOG.md > release-notes.md
+        gh release create "${GITHUB_REF_NAME}" "bible-passage-retriever-${VERSION}.vsix" \
+          --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
+      env:
+        GH_TOKEN: ${{ github.token }}
