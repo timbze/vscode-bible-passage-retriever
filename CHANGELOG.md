@@ -2,7 +2,7 @@
 
 All notable changes to the "bible-passage-retriever" extension will be documented in this file.
 
-## Unreleased
+## 1.1.0
 - Read the Bible text with libsword (the SWORD Project's library, as WebAssembly) from the CrossWire KJV module, instead of a MyBible SQLite database.
 - Psalm titles are no longer part of verse 1, and the subscriptions after the epistles are left out.
 
