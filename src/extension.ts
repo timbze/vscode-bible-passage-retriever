@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
-import { bcv_parser } from './parser/en_bcv_parser'
+import { bcv_parser } from 'bible-passage-reference-parser'
+import * as lang from 'bible-passage-reference-parser/esm/lang/en.js'
 import { getBiblePassage } from './bible-reader'
 
 function getTextAndSelection(editor: vscode.TextEditor): { text: string; selection: vscode.Selection, osisRefs: string } {
@@ -13,7 +14,7 @@ function getTextAndSelection(editor: vscode.TextEditor): { text: string; selecti
     text = lineText.trim()
   }
 
-  const parser = new bcv_parser()
+  const parser = new bcv_parser(lang)
   parser.parse(text)
   const osisRefs = parser.osis()
 

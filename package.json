@@ -70,5 +70,8 @@
     "esbuild-plugin-copy": "^2.1.1",
     "eslint": "^9.16.0",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "bible-passage-reference-parser": "^4.0.0"
   }
 }
