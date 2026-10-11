@@ -6,7 +6,9 @@ name: Release
 #
 # Required repository secrets:
 #   VSCE_PAT - Azure DevOps personal access token with Marketplace > Manage scope
-#   OVSX_PAT - Open VSX access token (https://open-vsx.org/user-settings/tokens)
+#
+# Open VSX uses trusted publishing (OIDC) instead of a token; this workflow is
+# registered at https://open-vsx.org/user-settings/trusted-publishers.
 
 on:
   push:
@@ -14,6 +16,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
@@ -55,9 +58,7 @@ jobs:
         VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
     - name: Publish to Open VSX
-      run: npx --yes ovsx@1.2.0 publish "bible-passage-retriever-${VERSION}.vsix"
-      env:
-        OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      run: npx --yes ovsx@1.2.0 publish "bible-passage-retriever-${VERSION}.vsix" --trusted-publishing
 
     - name: Create GitHub release
       run: |
