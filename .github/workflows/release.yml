@@ -1,14 +1,15 @@
 name: Release
 
 # Push a tag like `v1.2.3` (matching the version in package.json) to publish
-# the extension to the VS Code Marketplace and Open VSX, and to create a
-# GitHub release with the .vsix attached.
-#
-# Required repository secrets:
-#   VSCE_PAT - Azure DevOps personal access token with Marketplace > Manage scope
+# the extension to Open VSX and to create a GitHub release with the .vsix
+# attached.
 #
 # Open VSX uses trusted publishing (OIDC) instead of a token; this workflow is
 # registered at https://open-vsx.org/user-settings/trusted-publishers.
+#
+# The VS Code Marketplace is not published to automatically for now: upload the
+# .vsix from the GitHub release at https://marketplace.visualstudio.com/manage
+# until Marketplace trusted publishing (`vsce publish --oidc`) is available.
 
 on:
   push:
@@ -52,14 +53,6 @@ jobs:
     - name: Package
       run: npx --yes @vscode/vsce@4.0.0 package --out "bible-passage-retriever-${VERSION}.vsix"
 
-    - name: Publish to VS Code Marketplace
-      run: npx --yes @vscode/vsce@4.0.0 publish --packagePath "bible-passage-retriever-${VERSION}.vsix"
-      env:
-        VSCE_PAT: ${{ secrets.VSCE_PAT }}
-
-    - name: Publish to Open VSX
-      run: npx --yes ovsx@1.2.0 publish "bible-passage-retriever-${VERSION}.vsix" --trusted-publishing
-
     - name: Create GitHub release
       run: |
         # Use this version's section of CHANGELOG.md as the release notes
@@ -68,3 +61,6 @@ jobs:
           --title "${GITHUB_REF_NAME}" --notes-file release-notes.md
       env:
         GH_TOKEN: ${{ github.token }}
+
+    - name: Publish to Open VSX
+      run: npx --yes ovsx@1.2.0 publish "bible-passage-retriever-${VERSION}.vsix" --trusted-publishing
